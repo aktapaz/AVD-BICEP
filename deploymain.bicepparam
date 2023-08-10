@@ -4,7 +4,7 @@ param AADJoin  = false
 
 param appID = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' //where do i get them from?
 param appSecret = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' //where do i get them from?
-param artifactsLocation = 'https://tighedeploy.blob.core.windows.net/dsc/' //incorrect
+param artifactsLocation = './configuration/Configuration.ps1'
 param AVDResourceGroup = '${nameprefix}-avd-rg'
 param administratorAccountUserName = 'username'
 param administratorAccountPassword = 'Thi5i$aPssWord4Az0Re'
