@@ -6,16 +6,16 @@ param workspaceLocation string
 param nameprefix string
 
 @description('Boolean used to determine if Monitoring agent is needed')
-param monitoringAgent bool = false
+param monitoringAgent bool 
 
-@description('Wheter to use emphemeral disks for VMs')
-param ephemeral bool = true
+@description('Whether to use emphemeral disks for VMs')
+param ephemeral bool 
 
 @description('Declares whether Azure AD joined or not')
-param AADJoin bool = false
+param AADJoin bool 
 
 @description('Determines if Session Hosts are auto enrolled in Intune')
-param intune bool = false
+param intune bool 
 
 @description('Expiration time for the HostPool registration token. This must be up to 30 days from todays date.')
 param tokenExpirationTime string
@@ -27,7 +27,7 @@ param ouPath string
 param domain string
 
 @description('If true Host Pool, App Group and Workspace will be created. Default is to join Session Hosts to existing AVD environment')
-param newBuild bool = false
+param newBuild bool 
 param administratorAccountUserName string
 
 @secure()
@@ -37,22 +37,22 @@ param administratorAccountPassword string
   'Personal'
   'Pooled'
 ])
-param hostPoolType string = 'Pooled'
+param hostPoolType string 
 param hostPoolName string
 
 @allowed([
   'Automatic'
   'Direct'
 ])
-param personalDesktopAssignmentType string = 'Direct'
-param maxSessionLimit int = 12
+param personalDesktopAssignmentType string 
+param maxSessionLimit int 
 
 @allowed([
   'BreadthFirst'
   'DepthFirst'
   'Persistent'
 ])
-param loadBalancerType string = 'BreadthFirst'
+param loadBalancerType string 
 
 @description('Custom RDP properties to be applied to the AVD Host Pool.')
 param customRdpProperty string
@@ -61,7 +61,7 @@ param customRdpProperty string
 param hostPoolFriendlyName string
 
 @description('Name of the AVD Workspace to used for this deployment')
-param workspaceName string = 'ABRI-AVD-PROD'
+param workspaceName string 
 param appGroupFriendlyName string
 
 @description('List of application group resource IDs to be added to Workspace. MUST add existing ones!')
@@ -118,13 +118,13 @@ param logworkspaceSub string = subscription().subscriptionId
 @description('Resource Group that Log Analytics Workspace is located in.')
 param logworkspaceResourceGroup string
 @description('Name of Log Analytics Workspace for AVD to be joined to.')
-param logworkspaceName string
+param logworkspaceName string 
 
 //Used in VMswithLA module
 @description('Log Analytics Workspace ID')
 param workspaceID string = '/subscriptions/${logworkspaceSub}/resourceGroups/${logworkspaceResourceGroup}/providers/Microsoft.OperationalInsights/workspaces/${logworkspaceName}'
 @description('Log Analytics Workspace Key')
-param workspaceKey string 
+param workspaceKey string = ''
 
 param tagParams object
 
@@ -197,7 +197,7 @@ module VMswithLA './modules/VMswithLA.bicep' = {
     desktopName: desktopName
     resourceGroupName: AVDResourceGroup
     workspaceID: workspaceID
-    workspaceKey: workspaceKey
+    workspaceKey:listKeys(resourceId('Microsoft.OperationalInsights/workspaces', logworkspaceName), '2015-11-01-preview').primarySharedKey 
     tagParams: tagParams
     monitoringAgent: monitoringAgent
     ephemeral: ephemeral
